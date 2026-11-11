@@ -1,17 +1,24 @@
-// app.ts
-// Creates the Express app: settings first, then all the /api
-// routes, then the "not found" and error handlers.
-// it does not start listening; server.ts does that
+// "not found" and error handlers.
+// It does not start listening; server.ts does that
 
 import express from "express";
+import cors from "cors";
 import { env } from "./config/env";
+import routes from "./routes";
+import { notFound } from "./middleware/notFound";
 
 // STEP 3: Create the Express app
-// The express app: allow the website to call us (CORS), read JSON bodies, server uploaded photos,
-// put every route under /api, then the 404 and error handlers
+// The Express app: allow the website to call us (CORS), read JSON bodies, server
+// uploaded photos, put every route under /api, then the 404 and error handlers.
 
 const app = express();
 
+app.use(cors({ origin: env.ClientUrl, credentials: true })); // let the website (CLIENT_URL) call the API
 app.use(express.json());
+
+app.use("/api", routes); // every route lives under /api, e.g. /api/health
+
+app.use(notFound); // must come after the routes: runs only when nothing above matched
+
 export default app;
-// Step 4: (AHndle unknown url and errors) -> Server/src/middlware/notfound.ts
+// Next: STEP 4 (handle unknown URLs and errors) -> server/src/middleware/notFound.ts

@@ -98,6 +98,8 @@ const productSchema = new Schema<IProduct>(
 
     gallery: [{ name: String, hex: String }],
 
+    colors: [{ name: String, hex: String }],
+
     tags: [{ type: String }],
 
     badge: { type: String },
@@ -145,3 +147,5 @@ export const liveProducts = () => {
 };
 
 export const Product = model<IProduct>("Product", productSchema);
+
+//Next: Step9 (Make web friendly name {slugs})-> server/src/utils/slugigy.ts
