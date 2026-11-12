@@ -78,7 +78,7 @@ const productSchema = new Schema<IProduct>(
 
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
 
-    brand: { type: String, required: true, unique: true },
+    brand: { type: String, required: true },
 
     sku: { type: String, required: true, unique: true },
 

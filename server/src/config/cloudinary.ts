@@ -100,7 +100,7 @@ export const deleteAllUploadedPhotos = async () => {
 //cloudinary sends at most 500 per pages, so we keep asking for the next page until there is none
 //Empty list when cloudinary isn't set up (the products are then saved without pfotos.)
 
-export const listProductPhotoId = async (): Promise<string[]> => {
+export const listProductPhotoIds = async (): Promise<string[]> => {
   if (!isCloudinaryReady) {
     return [];
   }
