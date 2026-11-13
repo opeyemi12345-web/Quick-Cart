@@ -140,8 +140,8 @@ const productSchema = new Schema<IProduct>(
 export const liveProducts = () => {
   return {
     $or: [
-      { status: "published" },
-      { status: "scheduled", publishedAt: { $lte: new Date() } },
+      { status: "published" as const },
+      { status: "scheduled" as const, publishedAt: { $lte: new Date() } },
     ],
   };
 };
