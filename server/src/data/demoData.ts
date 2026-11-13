@@ -6,6 +6,7 @@ import { Types } from "mongoose";
 import { PHOTO_FOLDER, photoUrl } from "../config/cloudinary";
 import { categories } from "./categories";
 import { products } from "./product";
+import { users } from "./users";
 import { SeedProduct } from "./product";
 import { slugify } from "../utils/slugify";
 
@@ -66,6 +67,11 @@ export const photosFor = (slug: string, photoIds: string[]): string[] => {
 // ctaegories.ts is already shaped like the category model, so we hand it over as it is.
 export const demoCategories = () => {
   return categories;
+};
+// --- Users ---------------------------------------------------------------------------
+// users.ts is already shaped like the User model. Passwords are hashed by the model when seed.ts saves them.
+export const demoUsers = () => {
+  return users;
 };
 //-----------products -------------------------------
 //one product from product.ts -> one record shape like the product model.

@@ -5,7 +5,8 @@
 import mongoose, { Types } from "mongoose";
 import { Category } from "../models/Category";
 import { Product } from "../models/Products";
-import { demoCategories, demoProducts } from "./demoData";
+import { User } from "../models/User";
+import { demoCategories, demoProducts, demoUsers } from "./demoData";
 import { listProductPhotoIds } from "../config/cloudinary";
 import { products } from "./product";
 import { categories } from "./categories";
@@ -16,11 +17,17 @@ import { connectDB } from "../config/database";
 // The bottom of the file runs it only when you type npm run seed.
 
 export const seedDatabase = async () => {
-  // 1. Empty th collections (both at the same time with Promise.all)
-  await Promise.all([Category.deleteMany({}), Product.deleteMany({})]);
+  // 1. Empty the collections (both at the same time with Promise.all)
+  await Promise.all([
+    Category.deleteMany({}),
+    Product.deleteMany({}),
+    User.deleteMany({}),
+  ]);
 
-  //   2. Save the categories, then remember each ones id by slug: "electronics" -> objectId(''')
+  // 2. Save the users with create() so password save hooks hash their passwords.
+  const savedUsers = await User.create(demoUsers());
 
+  // 3. Save the categories, then remember each ones id by slug.
   const savedCategories = await Category.insertMany(demoCategories());
   const categoryIds = new Map<string, Types.ObjectId>(
     savedCategories.map((category) => {
@@ -28,15 +35,15 @@ export const seedDatabase = async () => {
     }),
   );
 
-  // 3. Which photos are on cloudinary?
+  // 4. Which photos are on cloudinary?
   const photoIds = await listProductPhotoIds();
 
-  // 4. Save the products
+  // 5. Save the products
   const saveProducts = await Product.insertMany(
     demoProducts(categoryIds, photoIds),
   );
 
-  // 5. Link bundles and related products .products.ts uses names: we swap each name for its id.
+  // 6. Link bundles and related products. products.ts uses names: we swap each name for its id.
   const productIds = new Map<string, Types.ObjectId>(
     saveProducts.map((product) => {
       return [product.name, product._id];
@@ -76,8 +83,9 @@ export const seedDatabase = async () => {
     }),
   );
 
-  //   6. A summary for whoever ran the seed
+  // 7. A summary for whoever ran the seed.
   return {
+    users: savedUsers.length,
     categories: savedCategories.length,
     products: saveProducts.length,
     withoutPhotos: saveProducts
@@ -86,7 +94,7 @@ export const seedDatabase = async () => {
       })
 
       .map((Product) => {
-        return Product.name;
+        return (Product.name, User);
       }),
   };
 };
@@ -99,7 +107,7 @@ const runSeed = async () => {
     const result = await seedDatabase();
 
     console.log(
-      `Seeded ${result.categories} categories and ${result.products} products`,
+      `Seeded ${result.users} users, ${result.categories} categories and ${result.products} products`,
     );
   } catch (error) {
     console.error("Seed failed:", (error as Error).message);
