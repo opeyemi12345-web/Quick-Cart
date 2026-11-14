@@ -14,7 +14,7 @@ export const env = {
   mongoUri: process.env.MONGO_URI || "",
   jwtSecret: process.env.JWT_SECRET || "dev-Secret-change-me",
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "15d", // remain logedd in for 15days
-  ClientUrl: process.env.CLIENT_URL || "http://localhost:5173",
+  clientUrl: process.env.CLIENT_URL || "http://localhost:5173",
 
   // The hidden demo panel (reset the data, move orders along) for presentations.
   // On while developing (npm run dev... runs the .ts files); off the built site (npm

@@ -14,7 +14,7 @@ import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
 
-app.use(cors({ origin: env.ClientUrl, credentials: true })); // let the website (CLIENT_URL) call the API
+app.use(cors({ origin: env.clientUrl, credentials: true })); // let the website (CLIENT_URL) call the API
 app.use(express.json());
 
 app.use("/api", routes); // every route lives under /api, e.g. /api/health
