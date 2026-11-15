@@ -82,7 +82,7 @@ export const changePassword = async (req: Request, res: Response) => {
 
 // ===== Addresses =====
 
-const pickAddress = (body: Record<string, unknown>) => {
+export const pickAddress = (body: Record<string, unknown>) => {
   const fields = [
     "label",
     "fullName",

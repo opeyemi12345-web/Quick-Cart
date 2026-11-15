@@ -4,6 +4,8 @@
 
 import mongoose, { Types } from "mongoose";
 import { Category } from "../models/Category";
+import { Counter } from "../models/Counter";
+import { Order } from "../models/Order";
 import { Product } from "../models/Products";
 import { PromoCode } from "../models/PromoCode";
 import { User } from "../models/User";
@@ -25,6 +27,8 @@ export const seedDatabase = async () => {
     Product.deleteMany({}),
     User.deleteMany({}),
     PromoCode.deleteMany({}),
+    Order.deleteMany({}),
+    Counter.deleteMany({}), // so the next order is #QC-1042 again
   ]);
 
   // 2. Save the users with create() so password save hooks hash their passwords.
