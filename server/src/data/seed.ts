@@ -8,6 +8,7 @@ import { Counter } from "../models/Counter";
 import { Order } from "../models/Order";
 import { Product } from "../models/Products";
 import { PromoCode } from "../models/PromoCode";
+import { Review } from "../models/Review";
 import { User } from "../models/User";
 import { demoCategories, demoProducts, demoUsers } from "./demoData";
 import { listProductPhotoIds } from "../config/cloudinary";
@@ -29,6 +30,7 @@ export const seedDatabase = async () => {
     PromoCode.deleteMany({}),
     Order.deleteMany({}),
     Counter.deleteMany({}), // so the next order is #QC-1042 again
+    Review.deleteMany({}),
   ]);
 
   // 2. Save the users with create() so password save hooks hash their passwords.
