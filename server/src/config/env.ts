@@ -17,6 +17,7 @@ export const env = {
   clientUrl: process.env.CLIENT_URL || "http://localhost:5173",
   // Brevo settings; emails fall back to the server terminal if the key or sender is missing.
   brevoApiKey: process.env.BREVO_API_KEY || "",
+  brevoListId: Number(process.env.BREVO_LIST_ID) || undefined,
   emailFrom: process.env.EMAIL_FROM || "",
   emailFromName: process.env.EMAIL_FROM_NAME || "QuickCart",
 
