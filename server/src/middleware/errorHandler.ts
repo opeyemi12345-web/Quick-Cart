@@ -6,6 +6,8 @@
 import { NextFunction, Request, Response } from "express";
 import { AppError } from "../utils/AppError";
 import mongoose from "mongoose";
+import multer from "multer";
+import { MAX_PHOTO_MB, MAX_PHOTOS } from "./upload";
 
 export const errorHandler = (
   error: unknown,
@@ -16,6 +18,18 @@ export const errorHandler = (
   //1. Our own errors: throw new AppError(404,  "Product not Found")
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({ message: error.message });
+  }
+
+  // 1b. multer refused an upload (STEP 25): a file too big, too many files, or the wrong field name
+  if (error instanceof multer.MulterError) {
+    const messages: Partial<Record<string, string>> = {
+      LIMIT_FILE_SIZE: `Each photo must be ${MAX_PHOTO_MB}MB or smaller.`,
+      LIMIT_FILE_COUNT: `You can upload up to ${MAX_PHOTOS} photos at a time.`,
+      LIMIT_UNEXPECTED_FILE: `Send the photos in a field called "photos" (up to ${MAX_PHOTOS} at a time).`,
+    };
+    return res
+      .status(400)
+      .json({ message: messages[error.code] ?? error.message });
   }
 
   // 2. A record broke the models rules (e.g required Field missing, price below 0)

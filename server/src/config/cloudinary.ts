@@ -48,7 +48,7 @@ export const isOurPhoto = (url: string) => {
     return false;
   }
 
-  return /^[/w/ -] +$/.test(url.slice(PHOTO_URL_START.length));
+  return /^[\w/-]+$/.test(url.slice(PHOTO_URL_START.length));
 };
 
 // the cloudinary name (public id) of a photo an admin uploads, or null for any other photo.
