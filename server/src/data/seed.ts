@@ -5,12 +5,14 @@
 import mongoose, { Types } from "mongoose";
 import { Category } from "../models/Category";
 import { Product } from "../models/Products";
+import { PromoCode } from "../models/PromoCode";
 import { User } from "../models/User";
 import { demoCategories, demoProducts, demoUsers } from "./demoData";
 import { listProductPhotoIds } from "../config/cloudinary";
 import { products } from "./product";
 import { categories } from "./categories";
 import { connectDB } from "../config/database";
+import { promoCodes } from "./promoCodes";
 
 // STEP 13:The seed command
 // seedDatabase() does the work and is exported, so the demo panel can reuse it.
@@ -22,6 +24,7 @@ export const seedDatabase = async () => {
     Category.deleteMany({}),
     Product.deleteMany({}),
     User.deleteMany({}),
+    PromoCode.deleteMany({}),
   ]);
 
   // 2. Save the users with create() so password save hooks hash their passwords.
@@ -83,18 +86,22 @@ export const seedDatabase = async () => {
     }),
   );
 
-  // 7. A summary for whoever ran the seed.
+  // 7. Save the promo codes (insertMany is fine here: promo codes have no save hooks)
+  const savedPromoCodes = await PromoCode.insertMany(promoCodes);
+
+  // 8. A summary for whoever ran the seed.
   return {
     users: savedUsers.length,
     categories: savedCategories.length,
     products: saveProducts.length,
+    promoCodes: savedPromoCodes.length,
     withoutPhotos: saveProducts
       .filter((Product) => {
         return Product.images.length === 0;
       })
 
       .map((Product) => {
-        return (Product.name, User);
+        return Product.name;
       }),
   };
 };
@@ -107,7 +114,7 @@ const runSeed = async () => {
     const result = await seedDatabase();
 
     console.log(
-      `Seeded ${result.users} users, ${result.categories} categories and ${result.products} products`,
+      `Seeded ${result.categories} categories, ${result.products} products, ${result.users} users and ${result.promoCodes} promo codes`,
     );
   } catch (error) {
     console.error("Seed failed:", (error as Error).message);
