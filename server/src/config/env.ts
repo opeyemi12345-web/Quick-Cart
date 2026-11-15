@@ -15,6 +15,10 @@ export const env = {
   jwtSecret: process.env.JWT_SECRET || "dev-Secret-change-me",
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "15d", // remain logedd in for 15days
   clientUrl: process.env.CLIENT_URL || "http://localhost:5173",
+  // Brevo settings; emails fall back to the server terminal if the key or sender is missing.
+  brevoApiKey: process.env.BREVO_API_KEY || "",
+  emailFrom: process.env.EMAIL_FROM || "",
+  emailFromName: process.env.EMAIL_FROM_NAME || "QuickCart",
 
   // The hidden demo panel (reset the data, move orders along) for presentations.
   // On while developing (npm run dev... runs the .ts files); off the built site (npm
