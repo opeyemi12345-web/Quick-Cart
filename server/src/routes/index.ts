@@ -2,6 +2,8 @@
 // Joins all the route files together app.ts puts these under /api
 
 import { Router } from "express";
+import accountRoutes from "./accountRoutes";
+import authRoutes from "./authRoutes";
 import categoryRoutes from "./categoryRoutes";
 import productRoutes from "./productRoutes";
 
@@ -18,6 +20,8 @@ router.get("health", (_req, res) => {
 
 router.use("/categories", categoryRoutes); // /api/categories...
 router.use("/products", productRoutes); // /api/products...
+router.use("/auth", authRoutes); // /api/auth...
+router.use("/account", accountRoutes); // /api/account...
 
 export default router;
 // Next: STEP 6 (start the server) -> server/src/server.
