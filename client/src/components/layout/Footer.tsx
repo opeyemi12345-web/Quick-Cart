@@ -12,7 +12,7 @@ const FooterColums: {
     links: [
       { label: "Electronics & Gadgets", to: "/shop?category=electronics" },
       { label: "Fashion & Apparel", to: "/shop?category=fashion" },
-      { label: "Home & Living", to: "/shop?category=living" },
+      { label: "Home & Living", to: "/shop?category=home-living" },
       { label: "Beauty & Personal Care", to: "/shop?category=beauty" },
       { label: "Daily Flash Deals", to: "/#Flash-sale" },
     ],
