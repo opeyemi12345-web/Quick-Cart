@@ -1,5 +1,6 @@
 // NewsletterBanner.tsx client/src/components/home/NewsLetterBanner.tsx
-// Home page newsletter form, connected to POST /api/newsletter/subscribe.
+// "JOIN QUICKCART CLUB": the Home page email box, connected to POST /api/newsletter/subscribe.
+// Subscribers receive a welcome gift code (QUICK10) by email.
 
 // STEP 33 (part 11): The newsletter box
 
@@ -19,6 +20,8 @@ const NewsletterBanner = () => {
     setStatus("sending");
 
     try {
+      // The server validates the email and returns the message to show, including when
+      // the address is already subscribed.
       const reply = await api<{ message: string }>("/newsletter/subscribe", {
         method: "POST",
         body: { email },
