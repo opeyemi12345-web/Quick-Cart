@@ -22,12 +22,21 @@ import {
 } from "../controllers/adminProductController";
 import { getCustomer, getCustomers } from "../controllers/adminCustomerController";
 import { getAdminOrder, getAdminOrders, updateOrderStatus } from "../controllers/adminOrderController";
+import { getDashboard } from "../controllers/adminDashboardController";
+import { advanceOrders, resetDemo } from "../controllers/demoController";
 import { adminOnly, protect } from "../middleware/auth";
 import { uploadPhotos } from "../middleware/upload";
 
 const router = Router();
 
 router.use(protect, adminOnly);
+
+// Dashboard (STEP 27)
+router.get("/dashboard", getDashboard);
+
+// Demo panel (STEP 28)
+router.post("/demo/reset", resetDemo);
+router.post("/demo/advance-orders", advanceOrders);
 
 router.post("/uploads", uploadPhotos, uploadProductPhotos);
 
