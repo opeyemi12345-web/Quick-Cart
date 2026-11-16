@@ -1,8 +1,11 @@
 // ProductCard.tsx client/src/components/product/ProductCard.tsx
 // The standard product card for featured products and the Shop page.
+// Other Home rows change the badge and the line under the name (STEP 33):
+//   <ProductCard product={product} badge={{ label: "NEW", className: "bg-primary text-white" }} details={<p>...</p>} />
 
 // STEP 32 (part 7): The product card
 
+import type { ReactNode } from "react";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
@@ -18,12 +21,23 @@ const badgeColor = (badge: string) =>
       ? "bg-success text-white"
       : "bg-warning text-white";
 
-const ProductCard = ({ product }: { product: ProductSummary }) => {
+type ProductCardProps = {
+  product: ProductSummary;
+  badge?: { label: string; className: string };
+  details?: ReactNode;
+};
+
+const ProductCard = ({ product, badge, details }: ProductCardProps) => {
   const { addItem } = useCart();
   const { showToast } = useToast();
 
   const soldOut = product.trackStock && product.stock <= 0;
   const link = `/product/${product.slug}`;
+  const shownBadge =
+    badge ??
+    (product.badge
+      ? { label: product.badge, className: badgeColor(product.badge) }
+      : null);
 
   const handleAdd = () => {
     const result = addItem(product, { color: product.colors[0]?.name });
@@ -58,11 +72,11 @@ const ProductCard = ({ product }: { product: ProductSummary }) => {
           </span>
         )}
 
-        {product.badge && (
+        {shownBadge && (
           <span
-            className={`absolute top-3 left-3 rounded-full px-2.5 py-1 text-[11px] leading-3.5 font-bold uppercase ${badgeColor(product.badge)}`}
+            className={`absolute top-3 left-3 rounded-full px-2.5 py-1 text-[11px] leading-3.5 font-bold uppercase ${shownBadge.className}`}
           >
-            {product.badge}
+            {shownBadge.label}
           </span>
         )}
       </Link>
@@ -79,11 +93,13 @@ const ProductCard = ({ product }: { product: ProductSummary }) => {
         </h3>
 
         <div className="mt-1.5">
-          <RatingStars
-            rating={product.ratings}
-            count={product.reviewCount}
-            size={15}
-          />
+          {details ?? (
+            <RatingStars
+              rating={product.ratings}
+              count={product.reviewCount}
+              size={15}
+            />
+          )}
         </div>
 
         <div className="mt-auto flex items-center justify-between gap-2 pt-3">
