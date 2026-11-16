@@ -29,6 +29,7 @@ import AdminLayout from "./layouts/AdminLayout";
 import AccountOverviewPage from "./pages/account/AccountOverviewPage";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import ProtectedRoute from "./components/auth/protectedRoute";
 function App() {
   return (
     <BrowserRouter>
@@ -43,42 +44,44 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
-          {/* pages that need a login: shoppers who are not logged in are sent to login first if they try to acess the page */}
-
-          <Route path="/Verify-email" element={<VerifyEmailPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route
-            path="/Order-confirmation/:orderId"
-            element={<OrderCorfirmationPAge />}
-          />
-          {/* Account pages: account menu on the left */}
-          <Route path="/account" element={<AccountLayout />}>
-            <Route index element={<AccountOverviewPage />} />
-            <Route path="Orders" element={<OrderHistotyPage />} />
-            <Route path="addresses" element={<AddressesPage />} />
-            <Route path="saved" element={<SavedItemsPage />} />
-            <Route path="settings" element={<AccountSettingPage />} />
+          {/* Pages that need a login: checkout, account, and email verification. */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/Verify-email" element={<VerifyEmailPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route
+              path="/Order-confirmation/:orderId"
+              element={<OrderCorfirmationPAge />}
+            />
+            <Route path="/account" element={<AccountLayout />}>
+              <Route index element={<AccountOverviewPage />} />
+              <Route path="Orders" element={<OrderHistotyPage />} />
+              <Route path="addresses" element={<AddressesPage />} />
+              <Route path="saved" element={<SavedItemsPage />} />
+              <Route path="settings" element={<AccountSettingPage />} />
+            </Route>
+            <Route
+              path="/account/orders/:orderId"
+              element={<OrderDetailsPage />}
+            />
           </Route>
-          <Route
-            path="/account/orders/:orderId"
-            element={<OrderDetailsPage />}
-          />
-
           <Route path="*" element={<NotFoundPage />} />
         </Route>
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboardPage />} />
-          <Route path="login" element={<AdminLoginPage />} />
-          <Route path="products" element={<AdminProductsPage />} />
-          <Route path="products/new" element={<AdminProductsPage />} />
-          <Route
-            path="Products/:productId/edit"
-            element={<AdminProductsFormPage />}
-          />
-          <Route path="orders" element={<AdminOrdersPage />} />
-          <Route path="customers" element={<AdminCustomersPage />} />
-          <Route path="categories" element={<AdminCategoriesPage />} />
-          <Route path="settings" element={<AdminSettingsPage />} />
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        {/* Admin pages: only admins get in. */}
+        <Route element={<ProtectedRoute adminOnly />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboardPage />} />
+            <Route path="products" element={<AdminProductsPage />} />
+            <Route path="products/new" element={<AdminProductsPage />} />
+            <Route
+              path="Products/:productId/edit"
+              element={<AdminProductsFormPage />}
+            />
+            <Route path="orders" element={<AdminOrdersPage />} />
+            <Route path="customers" element={<AdminCustomersPage />} />
+            <Route path="categories" element={<AdminCategoriesPage />} />
+            <Route path="settings" element={<AdminSettingsPage />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
