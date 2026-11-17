@@ -10,7 +10,7 @@ import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import VerifyEmailPage from "./pages/auth/VerifyEmailPage";
 import CheckoutPage from "./pages/cart/CheckoutPage";
-import OrderCorfirmationPAge from "./pages/cart/OrderCorfirmationPAge";
+import OrderCorfirmationPAge from "./pages/cart/OrderCorfirmationPage";
 import OrderHistotyPage from "./pages/account/OrderHistotyPage";
 import AddressesPage from "./pages/account/AddressesPage";
 import SavedItemsPage from "./pages/account/SavedItemsPage";
