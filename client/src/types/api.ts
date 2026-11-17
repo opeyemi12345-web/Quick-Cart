@@ -41,6 +41,7 @@ export type User = {
   addresses: Address[];
   savedItems: string[];
   createdAt: string;
+  passwordChangedAt?: string; // "Password last updated ..." (STEP 39)
 };
 
 // POST /api/auth/login and /register -> { token, user }
@@ -181,4 +182,12 @@ export type OrderResponse = {
   order: Order;
   canCancel: boolean;
   cancelDeadline: string;
+};
+
+// GET /api/orders/summary -> the My Account overview
+export type OrderSummaryResponse = {
+  totalOrders: number;
+  inProgress: number;
+  delivered: number;
+  recentOrders: Order[];
 };
