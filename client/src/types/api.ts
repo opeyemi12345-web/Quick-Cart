@@ -80,3 +80,50 @@ export type ProductsResponse = {
   page: number;
   pages: number;
 };
+
+// STEP 35: One product, and its reviews (server: productController.ts getProduct, reviewController.ts)
+
+export type ProductSpec = { group: string; label: string; value: string };
+export type ProductHighlight = { icon: string; title: string; text: string };
+
+// GET /api/products/:idOrSlug -> { product }: everything for the Product Details page
+export type Product = ProductSummary & {
+  description: string;
+  features: string[];
+  specs: ProductSpec[];
+  highlights: ProductHighlight[];
+  sku: string;
+  gallery: string[];
+  lowStockThreshold: number;
+  ratingCounts: number[];
+  category: { _id: string; name: string; slug: string; icon: string };
+  bundleProducts: ProductSummary[];
+  relatedProducts: ProductSummary[];
+};
+
+export type ProductResponse = { product: Product };
+
+export type Review = {
+  _id: string;
+  name: string;
+  rating: number;
+  title?: string;
+  comment: string;
+  createdAt: string;
+};
+
+// GET /api/reviews/product/:idOrSlug
+export type ReviewsResponse = {
+  summary: { ratings: number; reviewCount: number; ratingCounts: number[] };
+  reviews: Review[];
+  total: number;
+  page: number;
+  pages: number;
+};
+
+// GET /api/reviews/can-review/:productId
+export type CanReviewResponse = {
+  canReview: boolean;
+  reason: string | null;
+  review: Review | null;
+};

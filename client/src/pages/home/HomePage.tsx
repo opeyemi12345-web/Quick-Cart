@@ -7,6 +7,7 @@ import NewArrivals from "../../components/home/NewArrivals";
 import NewsletterBanner from "../../components/home/NewsLetterBanner";
 import PromoBanner from "../../components/home/PromoBanner";
 import RecommendedForYou from "../../components/home/RecommendedForYou";
+import RecentlyViewed from "../../components/home/RecentlyViewed";
 import Testimonials from "../../components/home/Testimonials";
 import TodaysDeal from "../../components/home/TodaysDeal";
 import TrustBar from "../../components/home/TrustBar";
@@ -24,6 +25,7 @@ const HomePage = () => {
       <PromoBanner />
       <NewArrivals />
       <RecommendedForYou />
+      <RecentlyViewed />
       <Testimonials />
       <NewsletterBanner />
     </div>
