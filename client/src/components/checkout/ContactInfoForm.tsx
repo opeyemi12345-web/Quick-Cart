@@ -3,11 +3,7 @@
 
 // STEP 38 (part 5): Contact information
 
-import {
-  MdOutlineMail,
-  MdOutlinePhone,
-  MdVerified,
-} from "react-icons/md";
+import { MdOutlineMail, MdOutlinePhone, MdVerified } from "react-icons/md";
 import type {
   ChangeField,
   CheckoutErrors,
