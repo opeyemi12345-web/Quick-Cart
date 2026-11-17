@@ -6,7 +6,7 @@
 // STEP 31 (part 1): The auth context
 
 import { createContext, useContext } from "react";
-import type { User } from "../types/api";
+import type { AuthResponse, User } from "../types/api";
 
 // What the register form sends (server: authController.ts -> register)
 export type RegisterData = {
@@ -26,6 +26,7 @@ export type AuthContextValue = {
   register: (data: RegisterData) => Promise<User>;
   logout: () => void;
   setUser: (user: User) => void;
+  startSession: (auth: AuthResponse) => User;
 };
 
 export const AuthContext = createContext<AuthContextValue | null>(null);

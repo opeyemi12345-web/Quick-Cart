@@ -43,7 +43,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
           {/* Pages that need a login: checkout, account, and email verification. */}
           <Route element={<ProtectedRoute />}>
             <Route path="/Verify-email" element={<VerifyEmailPage />} />

@@ -146,7 +146,7 @@ const RegisterPage = () => {
         confirmPassword: form.confirmPassword,
         agreeToTerms,
       });
-      navigate(from, { replace: true });
+      navigate("/verify-email", { replace: true }); // new accounts verify their email first (STEP 37)
     } catch (error) {
       setServerError(
         error instanceof Error ? error.message : "Unable to create your account.",
