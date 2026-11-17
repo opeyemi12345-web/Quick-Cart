@@ -127,3 +127,58 @@ export type CanReviewResponse = {
   reason: string | null;
   review: Review | null;
 };
+
+// STEP 38: Orders (server: models/Order.ts, orderController.ts)
+
+export type OrderStatus = "processing" | "shipped" | "delivered" | "cancelled";
+
+export type OrderItem = {
+  product: string;
+  name: string;
+  image: string;
+  sku: string;
+  price: number;
+  quantity: number;
+  color?: string;
+  lineTotal: number;
+};
+
+export type Order = {
+  _id: string;
+  orderNumber: string;
+  items: OrderItem[];
+  contact: { firstName: string; lastName: string; email: string; phone: string };
+  shippingAddress: Omit<Address, "_id" | "isDefault" | "label"> & {
+    label?: string;
+  };
+  deliveryMethod: "standard" | "express";
+  payment: {
+    method: "card" | "pay_on_delivery";
+    status: "paid" | "pending" | "refunded";
+    cardBrand?: string;
+    cardLast4?: string;
+    reference?: string;
+    paidAt?: string;
+  };
+  subtotal: number;
+  deliveryFee: number;
+  discount: number;
+  promoCode?: string;
+  total: number;
+  status: OrderStatus;
+  statusHistory: { status: OrderStatus; note: string; at: string }[];
+  estimatedDelivery: { from: string; to: string };
+  courier?: string;
+  waybill?: string;
+  deliveredAt?: string;
+  cancelledAt?: string;
+  cancelReason?: string;
+  createdAt: string;
+};
+
+// POST /api/orders and GET /api/orders/:orderNumber
+export type OrderResponse = {
+  order: Order;
+  canCancel: boolean;
+  cancelDeadline: string;
+};
