@@ -1,7 +1,14 @@
+// App.tsx client/src/App.tsx
+// Every page of the website and its address. The shop pages share MainLayout (Navbar + Footer), the account pages
+// AccountLayout, the admin pages AdminLayout.
+
+// STEP 45 (part 6): The help pages get their routes, and the admin pages load only when an admin opens them
+
+import { lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import CategoriesPage from "./pages/shop/CategoriesPage";
-import ShopPage from "./pages/shop/ShopPage";
 import HomePage from "./pages/home/HomePage";
+import ShopPage from "./pages/shop/ShopPage";
+import CategoriesPage from "./pages/shop/CategoriesPage";
 import ProductDetailsPage from "./pages/shop/ProductDetailsPage";
 import CartPage from "./pages/cart/CartPage";
 import LoginPage from "./pages/auth/LoginPage";
@@ -10,30 +17,45 @@ import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import VerifyEmailPage from "./pages/auth/VerifyEmailPage";
 import CheckoutPage from "./pages/cart/CheckoutPage";
-import OrderCorfirmationPAge from "./pages/cart/OrderCorfirmationPage";
-import OrderHistotyPage from "./pages/account/OrderHistotyPage";
+import OrderConfirmationPage from "./pages/cart/OrderCorfirmationPage";
+import OrderHistoryPage from "./pages/account/OrderHistotyPage";
 import AddressesPage from "./pages/account/AddressesPage";
 import SavedItemsPage from "./pages/account/SavedItemsPage";
-import AccountSettingPage from "./pages/account/AccountSettingPage";
+import AccountSettingsPage from "./pages/account/AccountSettingPage";
 import OrderDetailsPage from "./pages/account/OrderDetailsPage";
+import InfoPage from "./pages/infoPages";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
-import AdminProductsPage from "./pages/admin/AdminProductsPage";
-
-import AdminOrdersPage from "./pages/admin/AdminOrdersPage";
-import AdminCustomersPage from "./pages/admin/AdminCustomersPage";
-import AdminCategoriesPage from "./pages/admin/AdminCategoriesPage";
-import AdminSettingsPage from "./pages/admin/AdminSettingsPage";
 import MainLayout from "./layouts/MainLayout";
 import AccountLayout from "./layouts/AccountLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import AccountOverviewPage from "./pages/account/AccountOverviewPage";
-import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./components/auth/protectedRoute";
+import { infoPages } from "./utils/infoPages";
+
+// The admin pages are "lazy": their code (and Chart.js, the biggest library) is downloaded only when an admin opens
+// one, so shoppers get a smaller, faster website. AdminLayout shows a placeholder while a page downloads (<Suspense>).
+const AdminDashboardPage = lazy(
+  () => import("./pages/admin/AdminDashboardPage"),
+);
+const AdminProductsPage = lazy(() => import("./pages/admin/AdminProductsPage"));
+const AdminProductsFormPage = lazy(
+  () => import("./pages/admin/AdminProductsPage"),
+);
+const AdminOrdersPage = lazy(() => import("./pages/admin/AdminOrdersPage"));
+const AdminCustomersPage = lazy(
+  () => import("./pages/admin/AdminCustomersPage"),
+);
+const AdminCategoriesPage = lazy(
+  () => import("./pages/admin/AdminCategoriesPage"),
+);
+const AdminSettingsPage = lazy(() => import("./pages/admin/AdminSettingsPage"));
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Everyone can access these pages */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/shop" element={<ShopPage />} />
@@ -47,43 +69,64 @@ function App() {
             path="/reset-password/:token"
             element={<ResetPasswordPage />}
           />
-          {/* Pages that need a login: checkout, account, and email verification. */}
+
+          {/* Pages that need a login: shoppers who are not logged in are sent to /login first */}
           <Route element={<ProtectedRoute />}>
-            <Route path="/Verify-email" element={<VerifyEmailPage />} />
+            <Route path="/verify-email" element={<VerifyEmailPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route
-              path="/Order-confirmation/:orderId"
-              element={<OrderCorfirmationPAge />}
+              path="/order-confirmation/:orderId"
+              element={<OrderConfirmationPage />}
             />
+
+            {/* Account pages: account menu on the left */}
             <Route path="/account" element={<AccountLayout />}>
               <Route index element={<AccountOverviewPage />} />
-              <Route path="Orders" element={<OrderHistotyPage />} />
+              <Route path="orders" element={<OrderHistoryPage />} />
               <Route path="addresses" element={<AddressesPage />} />
               <Route path="saved" element={<SavedItemsPage />} />
-              <Route path="settings" element={<AccountSettingPage />} />
+              <Route path="settings" element={<AccountSettingsPage />} />
             </Route>
+
+            {/* Order details is full width in the design, so it has no account menu */}
             <Route
               path="/account/orders/:orderId"
               element={<OrderDetailsPage />}
             />
           </Route>
+
+          {/* Shipping, returns, FAQs, About, Terms, Privacy... (one route each, all using InfoPage) */}
+          {infoPages.map((page) => (
+            <Route
+              key={page.path}
+              path={page.path}
+              element={<InfoPage page={page} />}
+            />
+          ))}
+
           <Route path="*" element={<NotFoundPage />} />
         </Route>
+
+        {/* Admin login: no layout */}
         <Route path="/admin/login" element={<AdminLoginPage />} />
-        {/* Admin pages: only admins get in. */}
+
+        {/* Admin pages: admin menu + top bar, no store header or footer. Only admins get in. */}
         <Route element={<ProtectedRoute adminOnly />}>
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboardPage />} />
             <Route path="products" element={<AdminProductsPage />} />
-            <Route path="products/new" element={<AdminProductsPage />} />
+            <Route path="products/new" element={<AdminProductsFormPage />} />
             <Route
               path="products/:productId/edit"
-              element={<AdminProductsPage />}
+              element={<AdminProductsFormPage />}
             />
             <Route path="orders" element={<AdminOrdersPage />} />
             <Route path="customers" element={<AdminCustomersPage />} />
             <Route path="categories" element={<AdminCategoriesPage />} />
             <Route path="settings" element={<AdminSettingsPage />} />
+
+            {/* Any other admin address shows the 404 page inside the admin layout */}
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Route>
       </Routes>

@@ -36,7 +36,7 @@ const FooterColums: {
       { label: "Careers", to: "/careers" },
       { label: "Terms & Services", to: "/terms" },
       { label: "Privacy Policy", to: "/privacy" },
-      { label: "Merchant Partners", to: "/cookies" },
+      { label: "Merchant Partners", to: "/merchants" },
     ],
   },
 ];
