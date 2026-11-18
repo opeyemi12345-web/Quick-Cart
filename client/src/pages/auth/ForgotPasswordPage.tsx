@@ -1,5 +1,6 @@
 // ForgotPasswordPage.tsx client/src/pages/auth/ForgotPasswordPage.tsx
-// Request an account password-reset link by email.
+// "Forgot your password?": enter your email, get a reset link by email (POST /api/auth/forgot-password, server
+// STEP 19). Then "Check your inbox". (Design: Forgot Password & Confirmation)
 
 // STEP 37 (part 3): Forgot password
 
@@ -43,12 +44,8 @@ const ForgotPasswordPage = () => {
           body: { email: email.trim() },
         }),
       );
-    } catch (requestError) {
-      setError(
-        requestError instanceof Error
-          ? requestError.message
-          : "Unable to send a reset link. Please try again.",
-      );
+    } catch (err) {
+      setError((err as Error).message);
     } finally {
       setSending(false);
     }

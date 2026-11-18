@@ -74,6 +74,8 @@ const productSchema = new Schema<IProduct>(
 
     priceNote: { type: String },
 
+    features: { type: [String], default: [] },
+
     specs: [{ group: String, label: String, value: String }],
 
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
@@ -96,7 +98,7 @@ const productSchema = new Schema<IProduct>(
 
     images: [{ type: String }],
 
-    gallery: [{ name: String, hex: String }],
+    gallery: { type: [String], default: [] },
 
     colors: [{ name: String, hex: String }],
 
@@ -104,7 +106,13 @@ const productSchema = new Schema<IProduct>(
 
     badge: { type: String },
 
-    highlights: [{ icons: String, title: String, text: String }],
+    highlights: [
+      {
+        icon: String,
+        title: String,
+        text: String,
+      },
+    ],
 
     ratings: { type: Number, default: 0, min: 0, max: 5 },
 

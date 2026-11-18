@@ -160,7 +160,7 @@ export const getProduct = async (
   }
 
   // The model says: empty relatedProducts = show the best sellers from the same category
-  let relatedProducts: unknown[] = product.relatedProducts;
+  let relatedProducts: unknown[] = product.relatedProducts ?? [];
   if (relatedProducts.length === 0) {
     relatedProducts = await Product.find({
       $and: [
@@ -175,5 +175,20 @@ export const getProduct = async (
       .lean();
   }
 
-  res.json({ product: { ...product, relatedProducts } });
+  res.json({
+    product: {
+      ...product,
+      features: product.features ?? [],
+      specs: product.specs ?? [],
+      images: product.images ?? [],
+      gallery: (product.gallery ?? []).filter(
+        (image): image is string => typeof image === "string",
+      ),
+      colors: product.colors ?? [],
+      highlights: product.highlights ?? [],
+      ratingCounts: product.ratingCounts ?? [],
+      bundleProducts: product.bundleProducts ?? [],
+      relatedProducts,
+    },
+  });
 };

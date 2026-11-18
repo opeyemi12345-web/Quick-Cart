@@ -18,7 +18,7 @@ import AccountSettingPage from "./pages/account/AccountSettingPage";
 import OrderDetailsPage from "./pages/account/OrderDetailsPage";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminProductsPage from "./pages/admin/AdminProductsPage";
-import AdminProductsFormPage from "./pages/admin/AdminProductsFormPage";
+
 import AdminOrdersPage from "./pages/admin/AdminOrdersPage";
 import AdminCustomersPage from "./pages/admin/AdminCustomersPage";
 import AdminCategoriesPage from "./pages/admin/AdminCategoriesPage";
@@ -77,8 +77,8 @@ function App() {
             <Route path="products" element={<AdminProductsPage />} />
             <Route path="products/new" element={<AdminProductsPage />} />
             <Route
-              path="Products/:productId/edit"
-              element={<AdminProductsFormPage />}
+              path="products/:productId/edit"
+              element={<AdminProductsPage />}
             />
             <Route path="orders" element={<AdminOrdersPage />} />
             <Route path="customers" element={<AdminCustomersPage />} />

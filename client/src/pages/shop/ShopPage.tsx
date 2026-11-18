@@ -49,19 +49,16 @@ const ShopPage = () => {
   const sort = params.get("sort") ?? "featured";
   const page = Math.max(1, Number(params.get("page")) || 1);
 
+  // Start from the address bar as it is right now (window.location.search), so a late update (the search timer
+  // below) never undoes a filter clicked in the meantime.
   const update = (changes: Record<string, string>) => {
-    setParams((current) => {
-      const next = new URLSearchParams(current);
-      for (const [key, value] of Object.entries(changes)) {
-        if (value && !(key === "sort" && value === "featured")) {
-          next.set(key, value);
-        } else {
-          next.delete(key);
-        }
-      }
-      if (!("page" in changes)) next.delete("page");
-      return next;
-    });
+    const next = new URLSearchParams(window.location.search);
+    for (const [key, value] of Object.entries(changes)) {
+      if (value && !(key === "sort" && value === "featured")) next.set(key, value);
+      else next.delete(key); // empty, or the default: keep the address short
+    }
+    if (!("page" in changes)) next.delete("page");
+    setParams(next);
   };
 
   const [searchText, setSearchText] = useState(search);
