@@ -123,7 +123,7 @@ const getProduct = async (req, res) => {
         throw new AppError_1.AppError(404, "Product not found");
     }
     // The model says: empty relatedProducts = show the best sellers from the same category
-    let relatedProducts = product.relatedProducts;
+    let relatedProducts = product.relatedProducts ?? [];
     if (relatedProducts.length === 0) {
         relatedProducts = await Products_1.Product.find({
             $and: [
@@ -137,6 +137,19 @@ const getProduct = async (req, res) => {
             .limit(4)
             .lean();
     }
-    res.json({ product: { ...product, relatedProducts } });
+    res.json({
+        product: {
+            ...product,
+            features: product.features ?? [],
+            specs: product.specs ?? [],
+            images: product.images ?? [],
+            gallery: (product.gallery ?? []).filter((image) => typeof image === "string"),
+            colors: product.colors ?? [],
+            highlights: product.highlights ?? [],
+            ratingCounts: product.ratingCounts ?? [],
+            bundleProducts: product.bundleProducts ?? [],
+            relatedProducts,
+        },
+    });
 };
 exports.getProduct = getProduct;

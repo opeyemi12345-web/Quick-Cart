@@ -13,7 +13,7 @@ import {
   NIGERIAN_STATES,
   toInternational,
 } from "../../utils/nigeria";
-import Checkbox from "../form/Checkbox";
+import Checkbox from "../form/CheckBox";
 import TextInput from "../form/TextInput";
 
 type AddressFormProps = {
@@ -27,7 +27,8 @@ const AddressForm = ({ address, onDone, onCancel }: AddressFormProps) => {
   const [form, setForm] = useState({
     label: address?.label ?? "Home",
     fullName:
-      address?.fullName ?? `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim(),
+      address?.fullName ??
+      `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim(),
     phone: localPhone(address?.phone ?? user?.phone),
     street: address?.street ?? "",
     city: address?.city ?? "",

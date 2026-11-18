@@ -4,10 +4,7 @@
 // STEP 38 (part 10): The Checkout page
 
 import { useEffect, useState } from "react";
-import {
-  MdOutlineRemoveShoppingCart,
-  MdVerifiedUser,
-} from "react-icons/md";
+import { MdOutlineRemoveShoppingCart, MdVerifiedUser } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import CheckoutSummary from "../../components/checkout/CheckoutSummary";
 import ContactInfoForm from "../../components/checkout/ContactInfoForm";
@@ -265,9 +262,7 @@ const CheckoutPage = () => {
           deliveryFee={deliveryFee}
           deliveryLabel={deliveryMethod === "express" ? "Express" : "Standard"}
           promo={
-            applied
-              ? { code: applied.code, discount: applied.discount }
-              : null
+            applied ? { code: applied.code, discount: applied.discount } : null
           }
           error={serverError}
           placing={placing}

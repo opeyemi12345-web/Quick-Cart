@@ -5,19 +5,37 @@
 
 import { MdOutlinePlace } from "react-icons/md";
 import type { Address } from "../../types/api";
-import type { ChangeField, CheckoutErrors, CheckoutForm } from "../../types/checkout";
+import type {
+  ChangeField,
+  CheckoutErrors,
+  CheckoutForm,
+} from "../../types/checkout";
 import { NIGERIAN_STATES } from "../../utils/nigeria";
 import RadioCard from "../form/RadioCard";
 import TextInput from "../form/TextInput";
 import CheckoutSection from "./CheckoutSection";
 
-type DeliveryAddressFormProps = { form: CheckoutForm; errors: CheckoutErrors; onChange: ChangeField; saved: Address[] };
+type DeliveryAddressFormProps = {
+  form: CheckoutForm;
+  errors: CheckoutErrors;
+  onChange: ChangeField;
+  saved: Address[];
+};
 
-const DeliveryAddressForm = ({ form, errors, onChange, saved }: DeliveryAddressFormProps) => {
+const DeliveryAddressForm = ({
+  form,
+  errors,
+  onChange,
+  saved,
+}: DeliveryAddressFormProps) => {
   const typingNew = form.addressId === "new";
 
   return (
-    <CheckoutSection number={2} title="Delivery Address" subtitle="Specify where you'd like your packages delivered">
+    <CheckoutSection
+      number={2}
+      title="Delivery Address"
+      subtitle="Specify where you'd like your packages delivered"
+    >
       <div className="flex flex-col gap-3">
         {saved.map((address) => (
           <RadioCard
@@ -27,18 +45,32 @@ const DeliveryAddressForm = ({ form, errors, onChange, saved }: DeliveryAddressF
             checked={form.addressId === address._id}
             onChange={(value) => onChange("addressId", value)}
             title={address.label}
-            badge={address.isDefault && <span className="rounded-full bg-primary-light px-2 py-0.5 text-xs font-semibold text-primary">Default</span>}
+            badge={
+              address.isDefault && (
+                <span className="rounded-full bg-primary-light px-2 py-0.5 text-xs font-semibold text-primary">
+                  Default
+                </span>
+              )
+            }
             description={`${address.fullName} · ${address.street}, ${address.city}, ${address.state}`}
           />
         ))}
         {saved.length > 0 && (
-          <RadioCard name="address" value="new" checked={typingNew} onChange={(value) => onChange("addressId", value)} title="Use a new address" />
+          <RadioCard
+            name="address"
+            value="new"
+            checked={typingNew}
+            onChange={(value) => onChange("addressId", value)}
+            title="Use a new address"
+          />
         )}
       </div>
 
       {/* The address boxes: always when there are no saved addresses, otherwise only for "Use a new address" */}
       {(typingNew || saved.length === 0) && (
-        <div className={`grid gap-5 sm:grid-cols-2 ${saved.length > 0 ? "mt-5" : ""}`}>
+        <div
+          className={`grid gap-5 sm:grid-cols-2 ${saved.length > 0 ? "mt-5" : ""}`}
+        >
           <TextInput
             className="sm:col-span-2"
             label="Street Address"
@@ -58,7 +90,10 @@ const DeliveryAddressForm = ({ form, errors, onChange, saved }: DeliveryAddressF
             error={errors.city}
           />
           <div>
-            <label htmlFor="checkout-state" className="mb-2 block text-sm font-medium text-ink">
+            <label
+              htmlFor="checkout-state"
+              className="mb-2 block text-sm font-medium text-ink"
+            >
               State / Region
             </label>
             <select
@@ -73,11 +108,17 @@ const DeliveryAddressForm = ({ form, errors, onChange, saved }: DeliveryAddressF
                 <option key={state}>{state}</option>
               ))}
             </select>
-            {errors.state && <p className="mt-1.5 text-[13px] text-danger">{errors.state}</p>}
+            {errors.state && (
+              <p className="mt-1.5 text-[13px] text-danger">{errors.state}</p>
+            )}
           </div>
           <div className="sm:col-span-2">
-            <label htmlFor="checkout-instructions" className="mb-2 block text-sm font-medium text-ink">
-              Delivery Instructions <span className="font-normal text-muted">(Optional)</span>
+            <label
+              htmlFor="checkout-instructions"
+              className="mb-2 block text-sm font-medium text-ink"
+            >
+              Delivery Instructions{" "}
+              <span className="font-normal text-muted">(Optional)</span>
             </label>
             <textarea
               id="checkout-instructions"
