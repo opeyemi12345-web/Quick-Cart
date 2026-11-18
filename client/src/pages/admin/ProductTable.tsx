@@ -13,6 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import { useToast } from "../../context/ToastContext";
 import type { AdminProductRow } from "../../types/admin";
+import { announceCountsChanged } from "../../utils/adminEvent";
 import { api } from "../../utils/api";
 import { shortDate } from "../../utils/dates";
 import { naira } from "../../utils/format";
@@ -102,6 +103,7 @@ const ProductsTable = ({ products, onDeleted }: ProductsTableProps) => {
       showToast({ type: "success", title: message }); // "'Demo Speaker' has been deleted."
       setConfirmId(null);
       onDeleted();
+      announceCountsChanged(); // the menu's "Products 40" (STEP 43)
     } catch (err) {
       showToast({
         type: "error",
